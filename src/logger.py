@@ -16,5 +16,8 @@ logging.basicConfig(
     # filemode='w'
 )
 
+def custom_logger(log_info ):
+    logging.info(log_info)
+
 if __name__ == '__main__':
     logging.info('Logging has started')

@@ -1,4 +1,5 @@
 import sys
+from logger import custom_logger
 
 def error_message_detail(erroe, erroe_detail:sys):
     _, _, exc_tb = erroe_detail.exc_info()
@@ -19,4 +20,5 @@ if __name__ == '__main__':
     try:
         a = 1 / 0
     except Exception as e:
+        custom_logger(f"Exception occurred: {e}")
         raise CustomException(e, sys) from e
