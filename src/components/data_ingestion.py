@@ -7,6 +7,10 @@ from dataclasses import dataclass
 from src.exception import CustomException
 from src.logger import logging
 
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
+
+
 @dataclass
 class DataIngestionConfig:
     raw_data_path: str = os.path.join('artifacts', 'raw_data.csv')
@@ -47,13 +51,20 @@ class DataIngestion:
 # Driver code for standalone execution
 if __name__ == '__main__':
     try:
+        logging.info("Starting data ingestion process...")
         data_ingestion = DataIngestion()
         train_data, test_data = data_ingestion.initiate_data_ingestion()
-
-        logging.info(f'Train data saved at: {train_data}')
-        logging.info(f'Test data saved at: {test_data}')
-        
-
+        logging.info(f"Train data saved at: {train_data}")
+        logging.info(f"Test data saved at: {test_data}")
     except Exception as e:
-        logging.error(f'An error occurred during ingestion: {e}')
+        logging.exception(f" Error occurred during data ingestion: {e}")
+        sys.exit(1)
+
+    try:
+        logging.info("Starting data transformation process...")
+        data_transformation = DataTransformation()
+        data_transformation.initiate_data_transformation(train_data, test_data)
+        logging.info(" Data transformation completed successfully.")
+    except Exception as e:
+        logging.exception(f" Error occurred during data transformation: {e}")
         sys.exit(1)
