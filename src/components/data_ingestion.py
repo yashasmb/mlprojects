@@ -9,6 +9,8 @@ from src.logger import logging
 
 from src.components.data_transformation import DataTransformation
 from src.components.data_transformation import DataTransformationConfig
+from src.components.model_trainer import ModelTrainer
+from src.components.model_trainer import ModelTrainerConfig
 
 
 @dataclass
@@ -63,8 +65,20 @@ if __name__ == '__main__':
     try:
         logging.info("Starting data transformation process...")
         data_transformation = DataTransformation()
-        data_transformation.initiate_data_transformation(train_data, test_data)
+        train_arr, test_arr, _ =data_transformation.initiate_data_transformation(train_data, test_data)
         logging.info(" Data transformation completed successfully.")
     except Exception as e:
         logging.exception(f" Error occurred during data transformation: {e}")
+        sys.exit(1)
+
+    try:
+        logging.info("Starting model training process...")
+        model_trainer = ModelTrainer()
+        # preprocessor_path = DataTransformationConfig().preprocessor_obj_file_path
+        model_trainer.initiate_model_trainer(train_arr, test_arr)
+    
+        logging.info("Model training completed successfully.")
+
+    except Exception as e:
+        logging.exception(f" Error occurred during model training: {e}")
         sys.exit(1)
